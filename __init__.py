@@ -37,10 +37,20 @@ def execute(*args):
         return
 
     controller_name = args[0]
-    controller_class = __controllers[controller_name]
+    controller = __controllers[controller_name]()
 
-    controller = controller_class(args[1:])
+    if len(args) < 2 or not controller.validMethod(args[1]):
+        if len(args) >= 2:
+            print u' ! Error: method ' + repr(args[1]) + u' not found.\n'
+
+        print 'Choose a valid method:'
+        controller.printMethods()
+        return
+
+    controller.setMethod(args[1])
+    controller.setArgs(*args[2:])
     controller.execute()
+
 
 def getClass(class_name):
     global __classes
