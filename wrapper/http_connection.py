@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, os, pepper
-import urllib2, urllib, datetime, time, re
+import urllib2, urllib
 import base64, mimetypes
-from pyquery import PyQuery
 
 class BaseWrapperHttpConnection:
     username = None

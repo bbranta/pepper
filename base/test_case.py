@@ -11,16 +11,46 @@ class TestCase(unittest.TestCase):
         if x2 == str: x2 = unicode
         super(TestCase, self).assertEqual(x1, x2, *args, **kwargs)
 
-    def assertInDict(self, key, adict, atype=None, value=None, length=None):
+    def assertStartsWith(self, s, value, msg=None):
+        if not msg:
+            msg = 'Expected %s to start with %s' % (repr(s), repr(value))
+        self.assertTrue(s.startswith(value), msg)
+
+    def assertEndsWith(self, s, value, msg=None):
+        if not msg:
+            msg = 'Expected %s to end with %s' % (repr(s), repr(value))
+        self.assertTrue(s.endswith(value), msg)
+
+    def assertInDict(self, key, adict, atype=None, value=None, length=None, min_length=None,
+                     max_length=None, starts_with=None, ends_with=None, contains=None):
+
         self.assertIn(key, adict)
 
-        if atype != None:
+        if atype is not None:
             self.assertEqual(type(adict[key]), atype)
-        elif value != None:
+        elif value is not None:
             self.assertEqual(type(adict[key]), type(value))
 
-        if value != None:
+        if value is not None:
             self.assertEqual(adict[key], value)
+
+        if length is not None:
+            self.assertEqual(len(adict[key]), length)
+
+        if min_length is not None:
+            self.assertGreaterEqual(len(adict[key]), min_length)
+
+        if max_length is not None:
+            self.assertLessEqual(len(adict[key]), max_length)
+
+        if starts_with is not None:
+            self.assertStartsWith(adict[key], starts_with)
+
+        if ends_with is not None:
+            self.assertEndsWith(adict[key], ends_with)
+
+        if contains is not None:
+            self.assertIn(contains, adict[key])
 
     def getTests(self, test_func='all'):
         r = []

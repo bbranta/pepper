@@ -11,7 +11,8 @@ __controllers = {}
 __instances = {}
 __classes = {}
 
-def init():
+
+def __init():
     global __controllers
 
     print 'Pepper v0.1\n'
@@ -27,6 +28,7 @@ def init():
             controllers[name] = controller_class
 
     __controllers = controllers
+
 
 def execute(*args):
 
@@ -65,6 +67,7 @@ def getClass(class_name):
     __classes[class_name] = instance_class
     return instance_class
 
+
 def build(class_name):
     global __instances
 
@@ -79,6 +82,7 @@ def build(class_name):
 
     __instances[class_name] = instance
     return instance
+
 
 def createWrapper(class_name, *args, **kwargs):
     file_name = pepper.utils.deCamelCase(class_name)
@@ -101,4 +105,4 @@ def createWrapper(class_name, *args, **kwargs):
     instance = instance_class(*args, **kwargs)
     return instance
 
-init()
+__init()
