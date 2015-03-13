@@ -23,7 +23,7 @@ def __init():
             name = f[0:-14]
             mod_name = 'app.' + f[0:-3]
             __import__(mod_name, globals(), locals(), [], -1)
-            controller_class = name.capitalize() + 'Controller'
+            controller_class = pepper.utils.camelCase(name, ucfirst=True) + 'Controller'
             controller_class = sys.modules[mod_name].__dict__[controller_class]
             controllers[name] = controller_class
 
