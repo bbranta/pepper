@@ -71,16 +71,17 @@ def _getCPFVerifDigit(val):
     if len(val) != 9 or not val.isdigit():
         return False
 
-    a = 10
     for c in range(0, 2):
         total = 0
         for i in range(0, c + 9):
-            total += int(val[i]) * a
-            a -= 1
-        val += str((11 - (total % 11)) % 10)
-        a = 11
+            total += int(val[i]) * (10 + c - i)
+        rev = 11 - (total % 11)
+        val += str('0' if rev in [10, 11] else str(rev))
 
-    return val[9:11]
+    if len(val[9:]) != 2:
+        return False
+
+    return val[9:]
 
 def validCPF(val):
     val = str(val) if type(val) != str else val.replace('.', '').replace('-', '')
@@ -91,5 +92,10 @@ def validCPF(val):
     return val[9:] == dig
 
 def randomCPF():
-    n = str(random.randrange(100100100, 999000999))
-    return n + _getCPFVerifDigit(n)
+    while True:
+        n = str(random.randrange(100100100, 999000999))
+        dig = _getCPFVerifDigit(n)
+        if not dig:
+            continue
+
+        return n + dig
