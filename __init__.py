@@ -17,6 +17,10 @@ def __init():
 
     print 'Pepper v0.1\n'
 
+    cmd_folder = os.path.realpath('./pepper/lib/')
+    if cmd_folder not in sys.path:
+        sys.path.insert(0, cmd_folder)
+
     controllers = {}
     for f in os.listdir('app/'):
         if f.endswith('_controller.py'):
