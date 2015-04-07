@@ -6,13 +6,26 @@ class BaseWrapperGoogleCloudMessaging:
 
     def __init__(self, api_key):
         self.api_key = api_key
+        self.ret = {}
+        self.gcm = None
+
+    def start(self):
         self.gcm = gcm.GCM(self.api_key)
+        self.ret = {}
+
+    def finish(self):
+        ret, self.ret = self.ret, {}
+        self.gcm = None
+        return ret
 
     def send(self, registration_id, message, **kwargs):
         if type(registration_id) == list:
             registration_id_list = registration_id
         else:
             registration_id_list = [registration_id]
+
+        if self.gcm is None:
+            self.start()
 
         r = self.gcm.json_request(registration_ids=registration_id_list, data=message, **kwargs)
 
@@ -37,6 +50,9 @@ class BaseWrapperGoogleCloudMessaging:
                 ret[reg_id]['canonical_addr'] = canonical_id
                 ret[reg_id]['message'] = 'Canonical: ' + canonical_id
 
+
+        for k, v in ret.items():
+            self.ret[k] = v
 
         if type(registration_id) != list:
             return ret[registration_id]
