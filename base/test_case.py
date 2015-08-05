@@ -24,6 +24,7 @@ class TestCase(unittest.TestCase):
     def assertInDict(self, key, adict, atype=None, value=None, length=None, min_length=None,
                      max_length=None, starts_with=None, ends_with=None, contains=None):
 
+        self.assertEqual(type(adict), dict, 'Not a dict: %r' % adict)
         self.assertIn(key, adict)
 
         if atype is not None:
